@@ -20,7 +20,10 @@ export const fetchPosts = pageArray(totalPosts, pageSize)
         _limit: pageSize,
       },
     })
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch(() => {
+      throw new Error('Failed while loading posts');
+    })
     })
   .reduce((chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
     Promise.resolve([]))
