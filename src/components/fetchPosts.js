@@ -2,6 +2,7 @@ import { api } from '../api'
 
 const totalPosts = 95;
 const pageSize = 20;
+const pageStart = 20
 
 const pageArray = (total, size) => {
   const totalPages = total / size;
@@ -15,7 +16,7 @@ export const fetchPosts = pageArray(totalPosts, pageSize)
     (pageSize, index) => () => {
     return api.get(`/posts`, {
       params: {
-        _start: index * pageSize,
+        _start: index * pageStart,
         _limit: pageSize,
       },
     })
