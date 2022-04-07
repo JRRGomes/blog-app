@@ -10,7 +10,7 @@ const pageArray = (total, size) => {
 export const fetchPosts = (totalPosts, pageSize) => pageArray(totalPosts, pageSize)
   .map(
     (currentPageSize, index) => () => {
-    return api.get(`/posts`, {
+    return api.get('/posts', {
       params: {
         _start: index * pageSize,
         _limit: currentPageSize,
