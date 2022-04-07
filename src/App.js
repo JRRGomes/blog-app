@@ -38,9 +38,9 @@ function App() {
         <Heading level='3' margin='none'>Blog Posts</Heading>
         <Button icon={<Notification />} onClick={()=>{}}></Button>
       </AppBar>
-      {!hasError && !isLoading && <Box flex margin='large' gap='medium'>
+      {!hasError && !isLoading && <Box flex justify='center' direction='row' width='100%' wrap margin={{top: 'small'}} gap='small'>
         {posts.map((postObj) => (
-          <Card height="small" width="small" background="light-1">
+          <Card margin={{bottom: 'small'}} height="small" width="small" background="light-1">
             <CardHeader pad="medium">{postObj.title}</CardHeader>
           </Card>
         ))}

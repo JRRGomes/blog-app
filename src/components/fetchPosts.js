@@ -17,6 +17,15 @@ export const fetchPosts = (totalPosts, pageSize) => pageArray(totalPosts, pageSi
       },
     })
     .then((res) => res.data)
-    })
+    .then((res) => 
+      res.map((postObj) => 
+        api.get(`/posts/${postObj.id}/comments`)
+        .then((commentsObj) => {
+          postObj.comment = commentsObj.data
+          return postObj
+        })
+      )
+    ).then((res) => Promise.all(res))
+  })
   .reduce((chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
     Promise.resolve([]))
