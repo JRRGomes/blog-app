@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, CardHeader, Heading, Grommet } from 'grommet';
+import { Box, Button, Heading, Grommet } from 'grommet';
 import { Notification } from 'grommet-icons';
 import { theme } from './theme'
 import { AppBar } from './components/AppBar'
@@ -38,11 +38,15 @@ function App() {
         <Heading level='3' margin='none'>Blog Posts</Heading>
         <Button icon={<Notification />} onClick={()=>{}}></Button>
       </AppBar>
-      {!hasError && !isLoading && <Box flex justify='center' direction='row' width='100%' wrap margin={{top: 'small'}} gap='small'>
+      {!hasError && !isLoading && <Box flex direction='row' width='100%' wrap margin={{top: 'small'}} gap='small'>
         {posts.map((postObj) => (
-          <Card margin={{bottom: 'small'}} height="small" width="small" background="light-1">
-            <CardHeader pad="medium">{postObj.title}</CardHeader>
-          </Card>
+          <Box margin={{bottom: 'small'}} background="light-3">
+            <Box pad="small">Title: {postObj.title}</Box>
+            <Box pad="small">Body: {postObj.body}</Box>
+            {postObj.comment.map((comment) => (
+              <Box pad="small">Comment: {comment.body}</Box>
+            ))}
+          </Box>
         ))}
      </Box>}
      {hasError && <div>Could not load posts</div>}
