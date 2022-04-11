@@ -1,6 +1,4 @@
 import { api } from '../api'
-import axios from 'axios'
-
 
 const pageArray = (total, size) => {
   const totalPages = total / size;
@@ -9,28 +7,27 @@ const pageArray = (total, size) => {
   return [... new Array(fullPages).fill(size), partialPage].filter(Boolean)
 }
 
-const fetchUser = (userId) => {
-  return axios.get(`https://jsonplaceholder.typicode.com/users/${userId}`)
-      .then((userRes) => {
-        return userRes.data
-      })
+const requestUser = (userId) => {
+  return api.get(`/users/${userId}`)
+  .then((userRes) => {
+    return userRes.data
+  })
 }
 
 const fetchUsers = (posts) => {
-    const uniqueUsers = new Set (posts.map((post) => {
-      return post.userId
-    }))
-    console.log(uniqueUsers)
-    const promises = Array.from(uniqueUsers).map((userId) => {
-      return fetchUser(userId)
+  const uniqueUsers = new Set (posts.map((post) => {
+    return post.userId
+  }))
+  const promises = Array.from(uniqueUsers).map((userId) => {
+    return requestUser(userId)
+  })
+  return Promise.all(promises)
+  .then((users) => {
+    return posts.map((post) => {
+      const user = users.find(user => user.id === post.userId)
+      return {...post, user}
     })
-    return Promise.all(promises)
-    .then((users) => {
-      return posts.map((post) => {
-        const user = users.find(user => user.id === post.userId)
-        return {...post, user}
-      })
-    })
+  })
 }
 
 export const fetchPosts = (totalPosts, pageSize) => pageArray(totalPosts, pageSize)
@@ -55,13 +52,4 @@ export const fetchPosts = (totalPosts, pageSize) => pageArray(totalPosts, pageSi
   .reduce((chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
     Promise.resolve([]))
     .then((posts) => fetchUsers(posts))
-    // .then((posts) => 
-    //   posts.map((postObj) =>
-    //     api.get(`/users/${postObj.userId}`)
-    //     .then(({ data: user }) => {
-    //       return {...postObj, user}
-    //     })
-    //   )
-    // ).then((posts) => Promise.all(posts))
-
     
