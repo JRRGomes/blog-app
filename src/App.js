@@ -42,8 +42,9 @@ function App() {
         {posts.map((postObj) => (
           <Box margin={{bottom: 'small'}} background="light-3">
             <Box pad="small">Title: {postObj.title}</Box>
+            <Box pad="small">User: {postObj.user.name}</Box>
             <Box pad="small">Body: {postObj.body}</Box>
-            {postObj.comment.map((comment) => (
+            {postObj.comments.map((comment) => (
               <Box pad="small">Comment: {comment.body}</Box>
             ))}
           </Box>
